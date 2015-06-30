@@ -1,0 +1,21 @@
+body{
+  margin: 0;
+}
+
+#stats{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+#GUI{
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  z-index: 999;
+}
+.dg{
+  font-size: 20px;
+  width: 420px !important;
+}
+
