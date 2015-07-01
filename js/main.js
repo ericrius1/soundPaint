@@ -1,5 +1,5 @@
 var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats, testEarth;
-var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest;
+var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, pillars;
 var clock = new THREE.Clock();
 var time = 0;
 
@@ -8,7 +8,6 @@ init();
 function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.set(0, 7, 0);
 
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio || 1);
@@ -18,6 +17,7 @@ function init() {
   // controls = new THREE.OrbitControls(camera, glCanvasContainer);
   controls = new THREE.PointerLockControls(camera);
   scene.add(controls.getObject());
+  controls.getObject().position.copy(startingLocation)
   controlManager = new Controls();
   controlManager.init();
 
@@ -38,6 +38,9 @@ function init() {
   orb = new Orb();
   orb.move();
 
+  pillars = new Pillars(pillarLocation);
+  pillars.move();
+
   animate();
 }
 
@@ -49,6 +52,7 @@ function animate() {
   controlManager.update(clock.getDelta());
   objectControls.update();
   forest.update();
+  pillars.update();
   stats.update()
   TWEEN.update();
 }
@@ -59,9 +63,6 @@ function onResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function map(value, min1, max1, min2, max2) {
-  return min2 + (max2 - min2) * ((value - min1) / (max1 - min1));
-}
 
 
 
