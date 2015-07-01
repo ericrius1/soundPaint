@@ -1,7 +1,7 @@
 var moveForward, moveBackward,  moveRight, moveLeft;
 var velocity = new THREE.Vector3();
 var Controls = function() {
-
+  this.speed = 10000
   var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
   if (havePointerLock) {
@@ -131,22 +131,19 @@ Controls.prototype.init = function() {
 
 
 Controls.prototype.update = function(delta) {
-  velocity.x -= velocity.x * 10.0 * delta;
-  velocity.z -= velocity.z * 10.0 * delta;
+  velocity.x -= velocity.x * 10 * delta;
+  velocity.z -= velocity.z * 10 * delta;
 
-  // velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+  if (moveForward) velocity.z -= this.speed * delta;
+  if (moveBackward) velocity.z += this.speed * delta;
 
-  if (moveForward) velocity.z -= 400.0 * delta;
-  if (moveBackward) velocity.z += 400.0 * delta;
-
-  if (moveLeft) velocity.x -= 400.0 * delta;
-  if (moveRight) velocity.x += 400.0 * delta;
+  if (moveLeft) velocity.x -= this.speed * delta;
+  if (moveRight) velocity.x += this.speed * delta;
 
   // if (isOnObject === true) {
   //   velocity.y = Math.max(0, velocity.y);
 
   // }
-  console.log(velocity)
   controls.getObject().translateX(velocity.x * delta);
   controls.getObject().translateY(velocity.y * delta);
   controls.getObject().translateZ(velocity.z * delta);

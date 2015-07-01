@@ -1,25 +1,45 @@
 var Forest = function() {
 
-
-  var depth = 100;
-  var treeMat = new THREE.MeshBasicMaterial({
+  var numTrees = 1000;
+  var treeMat = new THREE.MeshLambertMaterial({
     color: 0x4f0f0f
   })
 
-  var floorMat = new THREE.MeshBasicMaterial({
-    color: 0x0bff0c
+  var miteGroup = new SPE.Group({
+    texture: THREE.ImageUtils.loadTexture('assets/smokeParticle.png'),
+    age: 200
   })
-  var floor = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), floorMat);
-  floor.rotation.x = -Math.PI/2;
+
+  var miteEmitter = new SPE.Emitter({
+    position: new THREE.Vector3(0, 1, 0),
+    positionSpread: new THREE.Vector3(100, 1, 100),
+    velocitySpread: new THREE.Vector3(100, 1, 100),
+    particleCount: 10000,
+    opacityEnd: 1
+  });
+
+  miteGroup.addEmitter(miteEmitter);
+  miteGroup.mesh.frustumCulled = false;
+  scene.add(miteGroup.mesh);
+
+
+  var floorMat = new THREE.MeshLambertMaterial({
+    color: 0x0c3c05
+  })
+  var floor = new THREE.Mesh(new THREE.PlaneGeometry(forestSide, forestSide, 10, 10), floorMat);
+  floor.rotation.x = -Math.PI / 2;
   scene.add(floor);
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < numTrees; i++) {
     var height = rF(15, 30);
     var tree = new THREE.Mesh(new THREE.BoxGeometry(2, height, 2), treeMat);
-    var xPos = Math.random() < 0.5 ? rF(-4, -2) : rF(2, 4);
-    var yPos = height/2;
-    var zPos = rF(0, -depth)
+    var xPos = rF(-forestSide/2, forestSide/2);
+    var yPos = height / 2;
+    var zPos = rF(-forestSide/2, forestSide/2);
     tree.position.set(xPos, yPos, zPos);
     scene.add(tree);
   };
 
-};
+  this.update = function() {
+    miteGroup.tick();
+  }
+}

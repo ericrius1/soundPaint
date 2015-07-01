@@ -1,13 +1,14 @@
 var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats, testEarth;
-var renderModel, effectBloom, effectCopy, effectFXAA, controlManager;
+var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest;
 var clock = new THREE.Clock();
+var time = 0;
 
 init();
 
 function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.set(0, 10, 0);
+  camera.position.set(0, 7, 0);
 
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio || 1);
@@ -31,16 +32,23 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.domElement);
 
-  var forest = new Forest();
+  forest = new Forest();
+  // forest.lightning();
+
+  orb = new Orb();
+  orb.move();
 
   animate();
 }
 
 function animate() {
+  time += clock.getDelta();
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
+  // controls.update();
   controlManager.update(clock.getDelta());
   objectControls.update();
+  forest.update();
   stats.update()
   TWEEN.update();
 }
