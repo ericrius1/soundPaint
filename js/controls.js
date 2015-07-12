@@ -131,8 +131,8 @@ Controls.prototype.init = function() {
 
 
 Controls.prototype.update = function(delta) {
-  velocity.x -= velocity.x * 10 * delta;
-  velocity.z -= velocity.z * 10 * delta;
+  velocity.x -= velocity.x * 100 * delta;
+  velocity.z -= velocity.z * 100 * delta;
 
   if (moveForward) velocity.z -= this.speed * delta;
   if (moveBackward) velocity.z += this.speed * delta;

@@ -1,10 +1,10 @@
+
 var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats, testEarth;
-var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, pillars;
+var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, canvas;
 var clock = new THREE.Clock();
 var time = 0;
 
-init();
-
+$(document).ready(init);
 function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
@@ -38,8 +38,7 @@ function init() {
   orb = new Orb();
   orb.move();
 
-  pillars = new Pillars(pillarLocation);
-  pillars.move();
+  canvas = new Canvas(canvasLocation);
 
   animate();
 }
@@ -52,7 +51,6 @@ function animate() {
   controlManager.update(clock.getDelta());
   objectControls.update();
   forest.update();
-  pillars.update();
   stats.update()
   TWEEN.update();
 }

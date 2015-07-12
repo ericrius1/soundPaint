@@ -19,3 +19,15 @@ body{
   width: 420px !important;
 }
 
+#wand{
+  position:absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  border:solid 1px;
+  border-color: #00f;
+
+}
+

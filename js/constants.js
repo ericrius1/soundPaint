@@ -4,6 +4,9 @@ var forestSide = 1000;
 var startingLocation = new THREE.Vector3(200, 7, 200);
 var pillarLocation = new THREE.Vector3(200, 7, 200);
 
+var canvasLocation = pillarLocation.clone();
+canvasLocation.z -= 30;
+
 
 function map(value, min1, max1, min2, max2) {
   return min2 + (max2 - min2) * ((value - min1) / (max1 - min1));

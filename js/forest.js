@@ -1,6 +1,6 @@
 var Forest = function() {
 
-  var numTrees = 1000;
+  var numTrees = 100;
   var treeMat = new THREE.MeshLambertMaterial({
     color: 0x4f0f0f
   })
@@ -14,7 +14,7 @@ var Forest = function() {
     position: new THREE.Vector3(0, 1, 0),
     positionSpread: new THREE.Vector3(100, 1, 100),
     velocitySpread: new THREE.Vector3(100, 1, 100),
-    particleCount: 10000,
+    particleCount: 1000,
     opacityEnd: 1
   });
 
