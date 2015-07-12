@@ -21,7 +21,7 @@ function init() {
   controlManager = new Controls();
   controlManager.init();
 
-  objectControls = new ObjectControls(camera, glCanvasContainer);
+  objectControls = new ObjectControls(controls.getObject(), glCanvasContainer);
 
   gui = new dat.GUI({
     autoplace: false
