@@ -1,17 +1,16 @@
 var Orb = function() {
-  var lightDistance = 1000;
+  var lightDistance = 500;
   var intensity = 1.5;
   var radius = 7;
   var sphereMat = new THREE.MeshBasicMaterial({
     color: 0xff00ff
   });
   var orbMesh = new THREE.Mesh(new THREE.SphereGeometry(radius, 20, 20), sphereMat);
-  orbMesh.position.set( rF(-forestSide/2, forestSide/2), radius + 10, rF(-forestSide/2, forestSide/2) );
+  orbMesh.position.copy(orbLocation);
   scene.add(orbMesh);
 
 
   orbMesh.pointLight = new THREE.PointLight(0xffffff, intensity, lightDistance);
-  orbMesh.pointLight.position.copy(controls.getObject().position);
   orbMesh.add(orbMesh.pointLight);
 
   this.move = function() {

@@ -26,7 +26,7 @@ var Forest = function() {
   var floorMat = new THREE.MeshLambertMaterial({
     color: 0x0c3c05
   })
-  var floor = new THREE.Mesh(new THREE.PlaneGeometry(forestSide, forestSide, 10, 10), floorMat);
+  var floor = new THREE.Mesh(new THREE.PlaneGeometry(forestSide, forestSide, 100, 100), floorMat);
   floor.rotation.x = -Math.PI / 2;
   scene.add(floor);
   for (var i = 0; i < numTrees; i++) {

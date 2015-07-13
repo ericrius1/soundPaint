@@ -7,7 +7,7 @@ var time = 0;
 $(document).ready(init);
 function init() {
   scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, .1, 10000);
 
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio || 1);
@@ -35,7 +35,7 @@ function init() {
   forest = new Forest();
 
   orb = new Orb();
-  orb.move();
+  // orb.move();
 
   canvas = new Canvas(canvasLocation);
 
