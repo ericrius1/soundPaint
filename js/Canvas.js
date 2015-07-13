@@ -1,40 +1,78 @@
 var Canvas = function() {
-  var geo = new THREE.PlaneBufferGeometry(16, 16);
+  this.canvasMeshSize = 16;
+  var geo = new THREE.PlaneBufferGeometry(this.canvasMeshSize, this.canvasMeshSize);
 
   var canvasElement = document.createElement("canvas");
-  var canvasSize = 4096
-  canvasElement.width = canvasSize;
-  canvasElement.height = canvasSize;
-  var canvasTexture = new THREE.Texture(canvasElement);
+  this.canvasTextureSize = 4096;
+  canvasElement.width = this.canvasTextureSize;
+  canvasElement.height = this.canvasTextureSize;
+  this.canvasTexture = new THREE.Texture(canvasElement);
 
-  var ctx = canvasElement.getContext("2d");
-  ctx.translate(0.5, 0.5);
+  this.drips = [];
 
-  ctx.fillStyle = rgbToFillStyle(200, 0, 100);
-  ctx.fillRect(0, 0, canvasSize, canvasSize);
-  
-  ctx.beginPath();
-  ctx.fillStyle = rgbToFillStyle(100, 10, 100);
-  ctx.arc(canvasSize/2, canvasSize/2, canvasSize/10, 0, Math.PI * 2);
-  ctx.fill();
+  this.ctx = canvasElement.getContext("2d");
+  this.ctx.translate(0.5, 0.5);
 
-  canvasTexture.needsUpdate = true;
+  this.ctx.fillStyle = rgbToFillStyle(200, 0, 100);
+  this.ctx.fillRect(0, 0, this.canvasTextureSize, this.canvasTextureSize);
+  this.ctx.lineJoin = this.ctx.lineCap = 'round';
+
+  this.canvasTexture.needsUpdate = true;
   var texture = new THREE.Texture(canvasElement);
   this.material = new THREE.MeshBasicMaterial({
-    map: canvasTexture,
+    map: this.canvasTexture,
     transparent: true,
     opacity: 0.95
   })
   var canvasMesh = new THREE.Mesh(geo, this.material);
   canvasMesh.position.copy(canvasLocation);
   scene.add(canvasMesh);
-
   objectControls.add(canvasMesh);
   canvasMesh.select = function() {
-    
-  }
+    var x = map(objectControls.intersectionPoint.x, -this.canvasMeshSize/2, this.canvasMeshSize/2,  0, this.canvasTextureSize);
+    var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);
+    var position = new THREE.Vector2(x, y);
+    var drip = this.createDrip(this.ctx, position);
+    this.drips.push(drip);
+  }.bind(this)
+
   this.update = function() {
-
+    _.each(this.drips, function(drip) {
+      drip.vx += drip.ax;
+      drip.vy += drip.ay;
+      drip.x += drip.vx;
+      drip.y += drip.vy;
+      if (drip.y < this.canvasTextureSize && drip.x < this.canvasTextureSize){
+        drip.draw();
+      }
+    }.bind(this));
+    this.canvasTexture.needsUpdate = true;
   }
 
+  this.createDrip = function(ctx, position) {
+    return {
+      x: position.x,
+      y: position.y,
+      prevX: position.x,
+      prevY: position.y,
+      radius: 100,
+      color: "blue",
+      vx: rF(0.1, 0.2),
+      vy: rF(0.1, 0.2),
+      ax: rF(.1, .2),
+      ay: rF(1, 5),
+      ctx: ctx,
+      draw: function() {
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = this.color
+        this.ctx.lineWidth = 400;
+        this.ctx.moveTo(this.prevX, this.prevY);
+        this.ctx.lineTo(this.x, this.y);
+        this.prevX = this.x;
+        this.prevY = this.y;
+        this.ctx.stroke();
+        this.ctx.closePath();
+      }
+    }
+  }
 }

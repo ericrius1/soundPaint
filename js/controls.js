@@ -13,11 +13,9 @@ var Controls = function() {
       if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
         controlsEnabled = true;
         controls.enabled = true;
-        console.log("ENABLED")
 
 
       } else {
-        console.log("FALSE")
         controls.enabled = false;
       }
 

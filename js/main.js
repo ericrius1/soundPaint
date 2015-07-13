@@ -33,7 +33,6 @@ function init() {
   document.body.appendChild(stats.domElement);
 
   forest = new Forest();
-  // forest.lightning();
 
   orb = new Orb();
   orb.move();
@@ -47,10 +46,10 @@ function animate() {
   time += clock.getDelta();
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
-  // controls.update();
   controlManager.update(clock.getDelta());
   objectControls.update();
   forest.update();
+  canvas.update();
   stats.update()
   TWEEN.update();
 }

@@ -6,6 +6,7 @@ var pillarLocation = new THREE.Vector3(200, 7, 200);
 
 var canvasLocation = pillarLocation.clone();
 canvasLocation.z -= 30;
+canvasLocation.x += 20;
 
 
 function map(value, min1, max1, min2, max2) {
