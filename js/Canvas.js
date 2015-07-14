@@ -1,5 +1,5 @@
 var Canvas = function() {
-  this.canvasMeshSize = 32;
+  this.canvasMeshSize = 64;
   var geo = new THREE.PlaneBufferGeometry(this.canvasMeshSize, this.canvasMeshSize);
 
   var canvasElement = document.createElement("canvas");
