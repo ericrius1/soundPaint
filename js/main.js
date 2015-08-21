@@ -14,10 +14,8 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   var glContainer = document.getElementById('glCanvasContainer');
   glCanvasContainer.appendChild(renderer.domElement);
-  // controls = new THREE.OrbitControls(camera, glCanvasContainer);
   controls = new THREE.PointerLockControls(camera);
   scene.add(controls.getObject());
-  controls.getObject().position.copy(startingLocation)
   controlManager = new Controls();
   controlManager.init();
 
@@ -32,12 +30,7 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.domElement);
 
-  forest = new Forest();
-
-  orb = new Orb();
-  // orb.move();
-
-  canvas = new Canvas(canvasLocation);
+  canvas = new Canvas();
 
   animate();
 }
@@ -48,7 +41,6 @@ function animate() {
   renderer.render(scene, camera);
   controlManager.update(clock.getDelta());
   objectControls.update();
-  forest.update();
   canvas.update();
   stats.update()
   TWEEN.update();

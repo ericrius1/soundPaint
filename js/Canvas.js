@@ -1,5 +1,5 @@
 var Canvas = function() {
-  this.canvasMeshSize = 64;
+  this.canvasMeshSize = 1024;
   var geo = new THREE.PlaneBufferGeometry(this.canvasMeshSize, this.canvasMeshSize);
 
   var canvasElement = document.createElement("canvas");
@@ -19,21 +19,20 @@ var Canvas = function() {
 
   this.canvasTexture.needsUpdate = true;
   var texture = new THREE.Texture(canvasElement);
-  this.material = new THREE.MeshLambertMaterial({
+  this.material = new THREE.MeshBasicMaterial({
     map: this.canvasTexture,
     transparent: true,
     opacity: 0.95
   })
   var canvasMesh = new THREE.Mesh(geo, this.material);
-  canvasMesh.position.copy(canvasLocation);
-  canvasMesh.position.y += this.canvasMeshSize/2 - 7
+  canvasMesh.rotation.x = -Math.PI/2;
   scene.add(canvasMesh);
   objectControls.add(canvasMesh);
   canvasMesh.select = function() {
     var x = map(objectControls.intersectionPoint.x, -this.canvasMeshSize/2, this.canvasMeshSize/2,  0, this.canvasTextureSize);
     var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);
     var position = new THREE.Vector2(x, y);
-    var drip = this.createDrip(this.ctx, position);
+    var drip = this.createDrip(this.ctx, position, 200);
     this.drips.push(drip);
   }.bind(this)
 
@@ -53,20 +52,24 @@ var Canvas = function() {
     this.canvasTexture.needsUpdate = true;
   }
 
-  this.createDrip = function(ctx, position) {
+  this.createDrip = function(ctx, position, radius) {
     return {
       x: position.x,
       y: position.y,
       prevX: position.x,
       prevY: position.y,
-      radius: 200,
-      color:  rgbToFillStyle(_.random(5, 15), _.random(5, 15), _.random(100, 200)),
+      radius: radius,
+      color:  rgbToFillStyle(_.random(5, 100), _.random(5, 20), _.random(100, 200), .1),
       vx: rF(0.1, 0.2),
       vy: rF(0.1, 0.2),
-      ax: rF(.1, .2),
-      ay: rF(1, 2),
+      ax: rF(-.1, .1),
+      ay: rF(-1, 1),
+      shouldUpdate: true,
       ctx: ctx,
       draw: function() {
+        if(!this.shouldUpdate) {
+          return;
+        }
         this.ctx.beginPath();
         this.ctx.strokeStyle = this.color
         this.ctx.moveTo(this.prevX, this.prevY);

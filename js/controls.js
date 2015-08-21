@@ -1,7 +1,7 @@
 var moveForward, moveBackward,  moveRight, moveLeft;
 var velocity = new THREE.Vector3();
 var Controls = function() {
-  this.speed = 10000
+  this.speed = 100000
   var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
   if (havePointerLock) {
