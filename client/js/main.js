@@ -11,6 +11,7 @@ ws.onmessage = function(event) {
   var li = document.createElement('li');
   li.innerHTML = JSON.parse(event.data);
   document.querySelector('#pings').appendChild(li);
+  console.log(event.data)
 };
 
 function init() {
