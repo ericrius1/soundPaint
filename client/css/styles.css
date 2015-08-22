@@ -1,0 +1,33 @@
+body{
+  margin: 0;
+}
+
+#stats{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+#GUI{
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  z-index: 999;
+}
+.dg{
+  font-size: 20px;
+  width: 420px !important;
+}
+
+#wand{
+  position:absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  border:solid 1px;
+  border-color: #00f;
+
+}
+
