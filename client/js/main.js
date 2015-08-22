@@ -1,10 +1,18 @@
-
 var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats, testEarth;
 var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, canvas;
 var clock = new THREE.Clock();
 var time = 0;
 
-$(document).ready(init);
+// $(document).ready(init);
+
+var host = location.origin.replace(/^http/, 'ws')
+var ws = new WebSocket(host);
+ws.onmessage = function(event) {
+  var li = document.createElement('li');
+  li.innerHTML = JSON.parse(event.data);
+  document.querySelector('#pings').appendChild(li);
+};
+
 function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, .1, 10000);
@@ -51,7 +59,6 @@ function onResize() {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
-
 
 
 
