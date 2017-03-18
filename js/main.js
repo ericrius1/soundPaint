@@ -1,6 +1,7 @@
 
 var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats, testEarth;
 var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, attractor, paintManager;
+var canvasDistance, canvasSize;
 var clock = new THREE.Clock();
 var canvases = [];
 var time = 0;
@@ -30,15 +31,27 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.domElement);
 
-  var canvasSize = 2000;
-  var canvas = new Canvas(new THREE.Vector3(0, 0, -canvasSize/8), new THREE.Euler(0, 0, 0));
+  canvasSize = 1024;
+  canvasDistance = canvasSize/2;  
+  var canvas = new Canvas(new THREE.Vector3(0, 0, -canvasDistance), new THREE.Euler(0, 0, 0));
   canvases.push(canvas);
-  canvas = new Canvas(new THREE.Vector3(0, 0, canvasSize/8), new THREE.Euler(0, Math.PI, 0));
+  canvas = new Canvas(new THREE.Vector3(0, 0, canvasDistance), new THREE.Euler(0, Math.PI, 0));
   canvases.push(canvas);
-  canvas = new Canvas(new THREE.Vector3(-canvasSize/8, 0, 0), new THREE.Euler(0, Math.PI/2, 0));
+  canvas = new Canvas(new THREE.Vector3(-canvasDistance, 0, 0), new THREE.Euler(0, Math.PI/2, 0));
   canvases.push(canvas);
-  canvas = new Canvas(new THREE.Vector3(canvasSize/8, 0, 0), new THREE.Euler(0, -Math.PI/2, 0));
+  canvas = new Canvas(new THREE.Vector3(canvasDistance, 0, 0), new THREE.Euler(0, -Math.PI/2, 0));
   canvases.push(canvas);
+
+ // var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+ //  scene.add( directionalLight );
+
+  var  pointLight = new THREE.PointLight(0xffffff, 11, canvasDistance * 1.9);
+  pointLight.position.z = -30  ;
+  scene.add(pointLight);
+
+  var sphereSize = 5;
+  var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
+  scene.add( pointLightHelper );
 
   attractor = new Attractor();
   paintManager = new PaintManager();

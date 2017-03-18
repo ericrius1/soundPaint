@@ -29,7 +29,8 @@ var PaintBall= function (direction) {
 	this.velocity =  direction.clone().multiplyScalar(5)	;
 	this.position = controls.getObject().position.clone();
 	var geo = new THREE.SphereGeometry(5, 8, 8);
-	this.mesh= new THREE.Mesh(geo);
+	var mat = new THREE.MeshNormalMaterial();
+	this.mesh= new THREE.Mesh(geo, mat);
 	this.mesh.position.copy(this.position);
 	scene.add(this.mesh);
 

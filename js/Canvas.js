@@ -1,6 +1,5 @@
 var Canvas = function(position, rotation) {
-  this.canvasMeshSize = 256;
-  var geo = new THREE.PlaneBufferGeometry(this.canvasMeshSize, this.canvasMeshSize);
+  var geo = new THREE.PlaneBufferGeometry(canvasSize, canvasSize);
 
   var canvasElement = document.createElement("canvas");
   this.canvasTextureSize = 1024;
@@ -19,9 +18,10 @@ var Canvas = function(position, rotation) {
 
   this.canvasTexture.needsUpdate = true;
   var texture = new THREE.Texture(canvasElement);
-  this.material = new THREE.MeshBasicMaterial({
+  this.material = new THREE.MeshLambertMaterial({
     map: this.canvasTexture,
-    side: THREE.DoubleSide
+    side: THREE.DoubleSide,
+    color: 0xff00ff
   })
   var canvasMesh = new THREE.Mesh(geo, this.material);
   canvasMesh.position.copy(position);
@@ -30,17 +30,17 @@ var Canvas = function(position, rotation) {
   objectControls.add(canvasMesh);
   canvasMesh.select = function() {
     if( rotation.y === Math.PI) {
-      var x = map(objectControls.intersectionPoint.x, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);
-      var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);  
+      var x = map(objectControls.intersectionPoint.x, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);  
     } else  if( rotation.y === 0) {
-      var x = map(objectControls.intersectionPoint.x, -this.canvasMeshSize/2, this.canvasMeshSize/2,  0, this.canvasTextureSize);
-      var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);  
+      var x = map(objectControls.intersectionPoint.x, -canvasSize/2, canvasSize/2,  0, this.canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);  
     } else if (rotation.y === -Math.PI/2) {
-       var x = map(objectControls.intersectionPoint.z, -this.canvasMeshSize/2, this.canvasMeshSize/2,  0, this.canvasTextureSize);
-      var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);  
+       var x = map(objectControls.intersectionPoint.z, -canvasSize/2, canvasSize/2,  0, this.canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);  
     } else if (rotation.y === Math.PI/2) {
-      var x = map(objectControls.intersectionPoint.z, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);
-      var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);  
+      var x = map(objectControls.intersectionPoint.z, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);  
     }
     var position = new THREE.Vector2(x, y);
     var drip = this.createDrip(this.ctx, position, 50);
