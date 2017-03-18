@@ -18,7 +18,7 @@ var Canvas = function(position, rotation) {
 
   this.canvasTexture.needsUpdate = true;
   var texture = new THREE.Texture(canvasElement);
-  this.material = new THREE.MeshLambertMaterial({
+  this.material = new THREE.MeshPhysicalMaterial({
     map: this.canvasTexture,
     side: THREE.DoubleSide,
     color: 0xff00ff

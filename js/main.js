@@ -1,12 +1,10 @@
-
 var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats, testEarth;
 var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, attractor, paintManager;
-var canvasDistance, canvasSize;
 var clock = new THREE.Clock();
-var canvases = [];
 var time = 0;
 
 $(document).ready(init);
+
 function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, .1, 10000);
@@ -20,7 +18,7 @@ function init() {
   controlManager = new Controls();
   controlManager.init();
 
-  objectControls = new ObjectControls( );
+  objectControls = new ObjectControls();
 
   gui = new dat.GUI({
     autoplace: false
@@ -31,27 +29,14 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.domElement);
 
-  canvasSize = 1024;
-  canvasDistance = canvasSize/2;  
-  var canvas = new Canvas(new THREE.Vector3(0, 0, -canvasDistance), new THREE.Euler(0, 0, 0));
-  canvases.push(canvas);
-  canvas = new Canvas(new THREE.Vector3(0, 0, canvasDistance), new THREE.Euler(0, Math.PI, 0));
-  canvases.push(canvas);
-  canvas = new Canvas(new THREE.Vector3(-canvasDistance, 0, 0), new THREE.Euler(0, Math.PI/2, 0));
-  canvases.push(canvas);
-  canvas = new Canvas(new THREE.Vector3(canvasDistance, 0, 0), new THREE.Euler(0, -Math.PI/2, 0));
-  canvases.push(canvas);
 
- // var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
- //  scene.add( directionalLight );
+  // var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+  //  scene.add( directionalLight );
 
-  var  pointLight = new THREE.PointLight(0xffffff, 11, canvasDistance * 1.9);
-  pointLight.position.z = -30  ;
-  scene.add(pointLight);
 
-  var sphereSize = 5;
-  var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
-  scene.add( pointLightHelper );
+  var ambientLight = new THREE.AmbientLight();
+  scene.add(ambientLight);
+ 
 
   attractor = new Attractor();
   paintManager = new PaintManager();
@@ -69,9 +54,7 @@ function animate() {
   TWEEN.update();
   paintManager.update();
 
-  for(var i = 0; i < canvases.length; i++) {
-    canvases[i].update();
-  }
+
 }
 
 function onResize() {
@@ -79,7 +62,6 @@ function onResize() {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
-
 
 
 

@@ -1,3 +1,6 @@
+var canvasSize = 1024;
+var canvasDistance = canvasSize / 2;
+var canvases = [];
 var PaintManager = function() {
 
 	this.domElement = document;
@@ -7,6 +10,17 @@ var PaintManager = function() {
 	this.paintBalls = [];
 	this.attractors = [];
 
+
+	var canvas = new Canvas(new THREE.Vector3(0, 0, -canvasDistance), new THREE.Euler(0, 0, 0));
+	canvases.push(canvas);
+	canvas = new Canvas(new THREE.Vector3(0, 0, canvasDistance), new THREE.Euler(0, Math.PI, 0));
+	canvases.push(canvas);
+	canvas = new Canvas(new THREE.Vector3(-canvasDistance, 0, 0), new THREE.Euler(0, Math.PI / 2, 0));
+	canvases.push(canvas);
+	canvas = new Canvas(new THREE.Vector3(canvasDistance, 0, 0), new THREE.Euler(0, -Math.PI / 2, 0));
+	canvases.push(canvas);
+
+
 }
 
 PaintManager.prototype.launchPaint = function() {
@@ -14,23 +28,26 @@ PaintManager.prototype.launchPaint = function() {
 }
 
 PaintManager.prototype.update = function() {
-	for (var i =  0; i < this.paintBalls.length; i++) {
+	for (var i = 0; i < canvases.length; i++) {
+		canvases[i].update();
+	}
+	for (var i = 0; i < this.paintBalls.length; i++) {
 		this.paintBalls[i].update(this.attractors);
 	}
 }
 
-PaintManager.prototype.addAttractor = function (attractor) {
+PaintManager.prototype.addAttractor = function(attractor) {
 	this.attractors.push(attractor)
 }
 
 
-var PaintBall= function (direction) {
+var PaintBall = function(direction) {
 	// Each paintball hasa starting velocity
-	this.velocity =  direction.clone().multiplyScalar(5)	;
+	this.velocity = direction.clone().multiplyScalar(5);
 	this.position = controls.getObject().position.clone();
 	var geo = new THREE.SphereGeometry(5, 8, 8);
 	var mat = new THREE.MeshNormalMaterial();
-	this.mesh= new THREE.Mesh(geo, mat);
+	this.mesh = new THREE.Mesh(geo, mat);
 	this.mesh.position.copy(this.position);
 	scene.add(this.mesh);
 
@@ -45,6 +62,10 @@ var PaintBall= function (direction) {
 		this.position.add(this.velocity);
 
 		this.mesh.position.copy(this.position);
+
+		if (this.position.z > canvasDistance || this.position.z < -canvasDistance) {
+			console.log("COLLISION!")
+		}
 
 	}
 }
