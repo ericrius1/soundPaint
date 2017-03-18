@@ -2,9 +2,8 @@ var Canvas = function(position, rotation) {
   var geo = new THREE.PlaneBufferGeometry(canvasSize, canvasSize);
 
   var canvasElement = document.createElement("canvas");
-  this.canvasTextureSize = 1024;
-  canvasElement.width = this.canvasTextureSize;
-  canvasElement.height = this.canvasTextureSize;
+  canvasElement.width = canvasTextureSize;
+  canvasElement.height = canvasTextureSize;
   this.canvasTexture = new THREE.Texture(canvasElement);
 
   this.drips = [];
@@ -13,7 +12,7 @@ var Canvas = function(position, rotation) {
   this.ctx.translate(0.5, 0.5);    
 
   this.ctx.fillStyle = rgbToFillStyle(200, 0, 100, 0.3);
-  this.ctx.fillRect(0, 0, this.canvasTextureSize, this.canvasTextureSize);
+  this.ctx.fillRect(0, 0, canvasTextureSize, canvasTextureSize);
   this.ctx.lineJoin = this.ctx.lineCap = 'round';
 
   this.canvasTexture.needsUpdate = true;
@@ -27,24 +26,24 @@ var Canvas = function(position, rotation) {
   canvasMesh.position.copy(position);
   canvasMesh.rotation.copy(rotation);  
   scene.add(canvasMesh);
-  objectControls.add(canvasMesh);
+  // objectControls.add(canvasMesh);
   canvasMesh.select = function() {
     if( rotation.y === Math.PI) {
-      var x = map(objectControls.intersectionPoint.x, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);
-      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);  
+      var x = map(objectControls.intersectionPoint.x, canvasSize/2, -canvasSize/2,  0, canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, canvasTextureSize);  
     } else  if( rotation.y === 0) {
-      var x = map(objectControls.intersectionPoint.x, -canvasSize/2, canvasSize/2,  0, this.canvasTextureSize);
-      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);  
+      var x = map(objectControls.intersectionPoint.x, -canvasSize/2, canvasSize/2,  0, canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, canvasTextureSize);  
     } else if (rotation.y === -Math.PI/2) {
-       var x = map(objectControls.intersectionPoint.z, -canvasSize/2, canvasSize/2,  0, this.canvasTextureSize);
-      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);  
+       var x = map(objectControls.intersectionPoint.z, -canvasSize/2, canvasSize/2,  0, canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, canvasTextureSize);  
     } else if (rotation.y === Math.PI/2) {
-      var x = map(objectControls.intersectionPoint.z, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);
-      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, this.canvasTextureSize);  
+      var x = map(objectControls.intersectionPoint.z, canvasSize/2, -canvasSize/2,  0, canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, canvasTextureSize);  
     }
     var position = new THREE.Vector2(x, y);
-    var drip = this.createDrip(this.ctx, position, 50);
-    this.drips.push(drip);
+    var drip = this.createDrip(this.ctx, position, 50); 
+    // this.drips.push(drip);
   }.bind(this)
 
   this.update = function() {
@@ -54,7 +53,7 @@ var Canvas = function(position, rotation) {
       drip.vy += drip.ay;
       drip.x += drip.vx;
       drip.y += drip.vy;
-      if (drip.y < this.canvasTextureSize && drip.x < this.canvasTextureSize){
+      if (drip.y < canvasTextureSize && drip.x < canvasTextureSize){
         drip.draw();
       } else {
         this.drips.splice(i, 1);
@@ -64,7 +63,7 @@ var Canvas = function(position, rotation) {
   }
 
   this.createDrip = function(ctx, position, radius) {
-    return {
+    var drip = {
       x: position.x,
       y: position.y,
       prevX: position.x,
@@ -94,5 +93,8 @@ var Canvas = function(position, rotation) {
 
       }
     }
+
+    this.drips.push(drip);
+    return drip;
   }
 }

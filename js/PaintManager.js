@@ -1,4 +1,6 @@
 var canvasSize = 1024;
+var canvasTextureSize = 1024;
+
 var canvasDistance = canvasSize / 2;
 var canvases = [];
 var PaintManager = function() {
@@ -50,6 +52,7 @@ var PaintBall = function(direction) {
 	this.mesh = new THREE.Mesh(geo, mat);
 	this.mesh.position.copy(this.position);
 	scene.add(this.mesh);
+	this.dead = false;
 
 	this.update = function(attractors) {
 		// find  all the attractors within range of this paintball and apply forces
@@ -63,9 +66,15 @@ var PaintBall = function(direction) {
 
 		this.mesh.position.copy(this.position);
 
-		if (this.position.z > canvasDistance || this.position.z < -canvasDistance) {
+		if (this.position.z > canvasDistance || this.position.z < -canvasDistance && !this.dead) {
 			console.log("COLLISION!")
+			 var x = map(this.position.x, -canvasSize/2, canvasSize/2,  0, canvasTextureSize);
+            var y = map(this.position.y, canvasSize/2, -canvasSize/2,  0, canvasTextureSize);  
+            var canvasPosition = new THREE.Vector2(x, y)
+			canvases[0].createDrip(canvases[0].ctx, canvasPosition, 50)
+			this.dead = true;
 		}
+
 
 	}
 }
