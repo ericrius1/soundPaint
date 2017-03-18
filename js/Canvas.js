@@ -1,5 +1,5 @@
-var Canvas = function() {
-  this.canvasMeshSize = 64;
+var Canvas = function(position, rotation) {
+  this.canvasMeshSize = 256;
   var geo = new THREE.PlaneBufferGeometry(this.canvasMeshSize, this.canvasMeshSize);
 
   var canvasElement = document.createElement("canvas");
@@ -11,7 +11,7 @@ var Canvas = function() {
   this.drips = [];
 
   this.ctx = canvasElement.getContext("2d");
-  this.ctx.translate(0.5, 0.5);
+  this.ctx.translate(0.5, 0.5);    
 
   this.ctx.fillStyle = rgbToFillStyle(200, 0, 100, 0.3);
   this.ctx.fillRect(0, 0, this.canvasTextureSize, this.canvasTextureSize);
@@ -21,9 +21,11 @@ var Canvas = function() {
   var texture = new THREE.Texture(canvasElement);
   this.material = new THREE.MeshBasicMaterial({
     map: this.canvasTexture,
+    side: THREE.DoubleSide
   })
   var canvasMesh = new THREE.Mesh(geo, this.material);
-  canvasMesh.position.z -= 100;   
+  canvasMesh.position.copy(position);
+  canvasMesh.rotation.copy(rotation);  
   scene.add(canvasMesh);
   objectControls.add(canvasMesh);
   canvasMesh.select = function() {

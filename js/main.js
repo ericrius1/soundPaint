@@ -1,7 +1,8 @@
 
 var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats, testEarth;
-var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, canvas, attractor, paintManager;
+var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, attractor, paintManager;
 var clock = new THREE.Clock();
+var canvases = [];
 var time = 0;
 
 $(document).ready(init);
@@ -29,7 +30,13 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.domElement);
 
-  canvas = new Canvas();
+  var canvasSize = 2000;
+  var canvas = new Canvas(new THREE.Vector3(0, 0, -canvasSize/8), new THREE.Euler(0, 0, 0));
+  canvases.push(canvas);
+  // canvas = new Canvas(new THREE.Vector3(0, 0, canvasSize/8), new THREE.Euler(0, Math.PI, 0));
+  canvas = new Canvas(new THREE.Vector3(-canvasSize/8, 0, 0), new THREE.Euler(0, Math.PI/2, 0));
+  canvases.push(canvas);
+  // canvas = new Canvas(new THREE.Vector3(canvasSize/8, 0, 0), new THREE.Euler(0, -Math.PI/2, 0));
 
   attractor = new Attractor();
   paintManager = new PaintManager();
@@ -43,10 +50,13 @@ function animate() {
   renderer.render(scene, camera);
   controlManager.update(clock.getDelta());
   objectControls.update();
-  canvas.update();
   stats.update()
   TWEEN.update();
   paintManager.update();
+
+  for(var i = 0; i < canvases.length; i++) {
+    canvases[i].update();
+  }
 }
 
 function onResize() {

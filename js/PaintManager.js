@@ -27,9 +27,7 @@ PaintManager.prototype.addAttractor = function (attractor) {
 var PaintBall= function (direction) {
 	// Each paintball hasa starting velocity
 	this.velocity =  direction.clone().multiplyScalar(5)	;
-	console.log(direction)
-	this.position = camera.position.clone();
-	
+	this.position = controls.getObject().position.clone();
 	var geo = new THREE.SphereGeometry(5, 8, 8);
 	this.mesh= new THREE.Mesh(geo);
 	this.mesh.position.copy(this.position);
@@ -39,7 +37,6 @@ var PaintBall= function (direction) {
 		// find  all the attractors within range of this paintball and apply forces
 		// console.log(thi	s.velocity)
 		var force = new THREE.Vector3().subVectors(attractors[0].position, this.position).normalize();
-		console.log(force)
 		force.multiplyScalar(attractors[0].strength);
 		// Force falls off as a function of distance
 		force.divideScalar(attractors[0].position.distanceTo(this.position));
