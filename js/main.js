@@ -1,6 +1,6 @@
 
 var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats, testEarth;
-var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, canvas;
+var renderModel, effectBloom, effectCopy, effectFXAA, controlManager, orb, forest, canvas, attractor, paintManager;
 var clock = new THREE.Clock();
 var time = 0;
 
@@ -18,7 +18,7 @@ function init() {
   controlManager = new Controls();
   controlManager.init();
 
-  objectControls = new ObjectControls(controls.getObject(), glCanvasContainer);
+  objectControls = new ObjectControls( );
 
   gui = new dat.GUI({
     autoplace: false
@@ -31,6 +31,8 @@ function init() {
 
   canvas = new Canvas();
 
+  attractor = new Attractor();
+  paintManager = new PaintManager();
   animate();
 }
 
@@ -43,6 +45,7 @@ function animate() {
   canvas.update();
   stats.update()
   TWEEN.update();
+  paintManager.update();
 }
 
 function onResize() {

@@ -1,5 +1,5 @@
 var Canvas = function() {
-  this.canvasMeshSize = 1024;
+  this.canvasMeshSize = 64;
   var geo = new THREE.PlaneBufferGeometry(this.canvasMeshSize, this.canvasMeshSize);
 
   var canvasElement = document.createElement("canvas");
@@ -25,7 +25,7 @@ var Canvas = function() {
     opacity: 0.95
   })
   var canvasMesh = new THREE.Mesh(geo, this.material);
-  canvasMesh.position.z -= 1000;   
+  canvasMesh.position.z -= 100;   
   scene.add(canvasMesh);
   objectControls.add(canvasMesh);
   canvasMesh.select = function() {
