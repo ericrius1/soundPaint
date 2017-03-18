@@ -5,6 +5,7 @@ var PaintManager = function() {
 	this.domElement.addEventListener("click", cb1);
 
 	this.paintBalls = [];
+	this.attractors = [];
 
 }
 
@@ -16,7 +17,7 @@ PaintManager.prototype.launchPaint = function() {
 
 PaintManager.prototype.update = function() {
 	for (var i =  0; i < this.paintBalls.length; i++) {
-		this.paintBalls[i].update();
+		this.paintBalls[i].update(this.attractors);
 	}
 }
 
@@ -35,9 +36,9 @@ var PaintBall= function () {
 	this.mesh.position = this.position;
 	scene.add(this.mesh);
 
-	this.update = function() {
+	this.update = function(attractors) {
 		// find  all the attractors within range of this paintball and apply forces
-		this.velocity
+		var forceDirection = new THREE.Vector3().subVectors(attractors[0].position, this.position);
 		this.mesh.position.add(this.velocity);
 	}
 }

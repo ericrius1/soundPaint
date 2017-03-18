@@ -33,6 +33,7 @@ function init() {
 
   attractor = new Attractor();
   paintManager = new PaintManager();
+  paintManager.addAttractor(attractor);
   animate();
 }
 
