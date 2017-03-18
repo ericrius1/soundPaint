@@ -10,9 +10,7 @@ var PaintManager = function() {
 }
 
 PaintManager.prototype.launchPaint = function() {
-	console.log("LAUNCH PAINT");
-
-	this.paintBalls.push(new PaintBall());
+	this.paintBalls.push(new PaintBall(controls.getDirection()));
 }
 
 PaintManager.prototype.update = function() {
@@ -26,19 +24,29 @@ PaintManager.prototype.addAttractor = function (attractor) {
 }
 
 
-var PaintBall= function () {
+var PaintBall= function (direction) {
 	// Each paintball hasa starting velocity
-	this.velocity = new THREE.Vector3(0, 0, -2);
-	this.position = camera.position;
+	this.velocity =  direction.clone().multiplyScalar(5)	;
+	console.log(direction)
+	this.position = camera.position.clone();
 	
 	var geo = new THREE.SphereGeometry(5, 8, 8);
 	this.mesh= new THREE.Mesh(geo);
-	this.mesh.position = this.position;
+	this.mesh.position.copy(this.position);
 	scene.add(this.mesh);
 
 	this.update = function(attractors) {
 		// find  all the attractors within range of this paintball and apply forces
-		var forceDirection = new THREE.Vector3().subVectors(attractors[0].position, this.position);
-		this.mesh.position.add(this.velocity);
+		// console.log(thi	s.velocity)
+		var force = new THREE.Vector3().subVectors(attractors[0].position, this.position).normalize();
+		console.log(force)
+		force.multiplyScalar(attractors[0].strength);
+		// Force falls off as a function of distance
+		force.divideScalar(attractors[0].position.distanceTo(this.position));
+		this.velocity.add(force)
+		this.position.add(this.velocity);
+
+		this.mesh.position.copy(this.position);
+
 	}
 }

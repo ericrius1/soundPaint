@@ -21,8 +21,6 @@ var Canvas = function() {
   var texture = new THREE.Texture(canvasElement);
   this.material = new THREE.MeshBasicMaterial({
     map: this.canvasTexture,
-    transparent: true,
-    opacity: 0.95
   })
   var canvasMesh = new THREE.Mesh(geo, this.material);
   canvasMesh.position.z -= 100;   
