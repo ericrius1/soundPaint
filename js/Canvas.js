@@ -3,7 +3,7 @@ var Canvas = function(position, rotation) {
   var geo = new THREE.PlaneBufferGeometry(this.canvasMeshSize, this.canvasMeshSize);
 
   var canvasElement = document.createElement("canvas");
-  this.canvasTextureSize = 4096;
+  this.canvasTextureSize = 1024;
   canvasElement.width = this.canvasTextureSize;
   canvasElement.height = this.canvasTextureSize;
   this.canvasTexture = new THREE.Texture(canvasElement);
@@ -29,10 +29,21 @@ var Canvas = function(position, rotation) {
   scene.add(canvasMesh);
   objectControls.add(canvasMesh);
   canvasMesh.select = function() {
-    var x = map(objectControls.intersectionPoint.x, -this.canvasMeshSize/2, this.canvasMeshSize/2,  0, this.canvasTextureSize);
-    var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);
+    if( rotation.y === Math.PI) {
+      var x = map(objectControls.intersectionPoint.x, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);  
+    } else  if( rotation.y === 0) {
+      var x = map(objectControls.intersectionPoint.x, -this.canvasMeshSize/2, this.canvasMeshSize/2,  0, this.canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);  
+    } else if (rotation.y === -Math.PI/2) {
+       var x = map(objectControls.intersectionPoint.z, -this.canvasMeshSize/2, this.canvasMeshSize/2,  0, this.canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);  
+    } else if (rotation.y === Math.PI/2) {
+      var x = map(objectControls.intersectionPoint.z, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);
+      var y = map(objectControls.intersectionPoint.y, this.canvasMeshSize/2, -this.canvasMeshSize/2,  0, this.canvasTextureSize);  
+    }
     var position = new THREE.Vector2(x, y);
-    var drip = this.createDrip(this.ctx, position, 200);
+    var drip = this.createDrip(this.ctx, position, 50);
     this.drips.push(drip);
   }.bind(this)
 

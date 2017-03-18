@@ -33,10 +33,12 @@ function init() {
   var canvasSize = 2000;
   var canvas = new Canvas(new THREE.Vector3(0, 0, -canvasSize/8), new THREE.Euler(0, 0, 0));
   canvases.push(canvas);
-  // canvas = new Canvas(new THREE.Vector3(0, 0, canvasSize/8), new THREE.Euler(0, Math.PI, 0));
+  canvas = new Canvas(new THREE.Vector3(0, 0, canvasSize/8), new THREE.Euler(0, Math.PI, 0));
+  canvases.push(canvas);
   canvas = new Canvas(new THREE.Vector3(-canvasSize/8, 0, 0), new THREE.Euler(0, Math.PI/2, 0));
   canvases.push(canvas);
-  // canvas = new Canvas(new THREE.Vector3(canvasSize/8, 0, 0), new THREE.Euler(0, -Math.PI/2, 0));
+  canvas = new Canvas(new THREE.Vector3(canvasSize/8, 0, 0), new THREE.Euler(0, -Math.PI/2, 0));
+  canvases.push(canvas);
 
   attractor = new Attractor();
   paintManager = new PaintManager();
