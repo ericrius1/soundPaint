@@ -25,7 +25,7 @@ var Canvas = function() {
     opacity: 0.95
   })
   var canvasMesh = new THREE.Mesh(geo, this.material);
-  canvasMesh.rotation.x = -Math.PI/2;
+  canvasMesh.position.z -= 1000;   
   scene.add(canvasMesh);
   objectControls.add(canvasMesh);
   canvasMesh.select = function() {

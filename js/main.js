@@ -8,7 +8,6 @@ $(document).ready(init);
 function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, .1, 10000);
-  camera.position.y= 100;
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio || 1);
   renderer.setSize(window.innerWidth, window.innerHeight);
