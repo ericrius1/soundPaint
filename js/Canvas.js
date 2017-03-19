@@ -42,7 +42,6 @@ var Canvas = function(position, rotation) {
       var y = map(objectControls.intersectionPoint.y, canvasSize/2, -canvasSize/2,  0, canvasTextureSize);  
     }
     var position = new THREE.Vector2(x, y);
-    var drip = this.createDrip(this.ctx, position, 50); 
     // this.drips.push(drip);
   }.bind(this)
 
@@ -62,7 +61,7 @@ var Canvas = function(position, rotation) {
     this.canvasTexture.needsUpdate = true;
   }
 
-  this.createDrip = function(ctx, position, radius) {
+  this.createDrip = function(ctx, position, radius, velocity) {
     var drip = {
       x: position.x,
       y: position.y,
@@ -70,10 +69,10 @@ var Canvas = function(position, rotation) {
       prevY: position.y,
       radius: radius,
       color:  rgbToFillStyle(_.random(5, 100), _.random(5, 20), _.random(100, 200), .1),
-      vx: rF(0.1, 0.2),
-      vy: rF(0.1, 0.2),
-      ax: rF(-.1, .1),
-      ay: rF(-1, 1),
+      vx: velocity.x,
+      vy: -velocity.y,
+      ax: 0,
+      ay: 0,
       shouldUpdate: true,
       ctx: ctx,
       draw: function() {
@@ -87,7 +86,7 @@ var Canvas = function(position, rotation) {
         this.ctx.lineWidth = this.radius
         this.prevX = this.x;
         this.prevY = this.y;
-        this.radius -= 2
+        this.radius -= .1
         this.ctx.stroke();
         this.ctx.closePath();
 

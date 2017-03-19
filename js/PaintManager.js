@@ -55,6 +55,9 @@ var PaintBall = function(direction) {
 	this.dead = false;
 
 	this.update = function(attractors) {
+		if (this.dead) {
+			return;
+		}
 		// find  all the attractors within range of this paintball and apply forces
 		// console.log(thi	s.velocity)
 		var force = new THREE.Vector3().subVectors(attractors[0].position, this.position).normalize();
@@ -66,13 +69,15 @@ var PaintBall = function(direction) {
 
 		this.mesh.position.copy(this.position);
 
-		if (this.position.z > canvasDistance || this.position.z < -canvasDistance && !this.dead) {
+		if (this.position.z < -canvasDistance) {
 			console.log("COLLISION!")
 			 var x = map(this.position.x, -canvasSize/2, canvasSize/2,  0, canvasTextureSize);
             var y = map(this.position.y, canvasSize/2, -canvasSize/2,  0, canvasTextureSize);  
             var canvasPosition = new THREE.Vector2(x, y)
-			canvases[0].createDrip(canvases[0].ctx, canvasPosition, 50)
+			canvases[0].createDrip(canvases[0].ctx, canvasPosition, 2s0, this.velocity)
 			this.dead = true;
+		} else if (this.position.z > canvasDistance) {
+
 		}
 
 
